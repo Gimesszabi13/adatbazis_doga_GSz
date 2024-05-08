@@ -1,0 +1,41 @@
+1.feladat
+
+Filter: {$and: [{ "languages.0": "English" },{"awards.wins": {$eq: 2}}]}
+Project: {"title": 1, "writers": 1, "directors": 1, "year": 1, "_id": 0}
+Sort: {"year": -1}
+
+-------------------------------------------------------------------------------------
+
+2.feladat
+
+db.users.find({"email": {$regex: /.com/}},{"name":1, "email":1, "_id": 0})
+
+
+
+-------------------------------------------------------------------------------------
+
+
+3.feladat
+
+
+db.movies.aggregate([{$match: {"year": {$gt: 1950}}},{$group: {_id: "$rated", average: {$avg: "$runtime"}}}])
+
+
+-------------------------------------------------------------------------------------
+
+4.feladat
+
+MATCH (m:Movie)<-[:ACTED_IN]-(p:Person)
+WHERE m.year > 1970 OR m.title CONTAINS 'Love'
+RETURN m.title AS film_címe, COLLECT(p.name) AS szereplők
+ORDER BY film_címe DESC
+
+
+-------------------------------------------------------------------------------------
+
+5.feladat
+
+MATCH (p:Person)-[:DIRECTED]->(m:Movie)
+RETURN p.name AS Director, COUNT(*) AS NumMoviesDirected
+ORDER BY NumMoviesDirected DESC
+LIMIT 5
